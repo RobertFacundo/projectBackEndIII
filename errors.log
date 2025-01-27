@@ -1,0 +1,4 @@
+{"level":"error","message":"Este es un mensaje de nivel ERROR","timestamp":"2025-01-21T19:19:00.058Z"}
+{"level":"fatal","message":"Este es un mensaje de nivel FATAL","timestamp":"2025-01-21T19:19:00.060Z"}
+{"level":"error","message":"Este es un mensaje de nivel ERROR","timestamp":"2025-01-21T19:29:34.381Z"}
+{"level":"fatal","message":"Este es un mensaje de nivel FATAL","timestamp":"2025-01-21T19:29:34.385Z"}
