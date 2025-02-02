@@ -15,7 +15,7 @@ import loggerTestRouter from './routes/loggerTest.router.js';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const connection = mongoose.connect("mongodb+srv://robertfacundo:SaludDineroyAmor@cluster0.tbzxf.mongodb.net/adoptme?retryWrites=true&w=majority", {
+const connection = mongoose.connect("mongodb+srv://robertfacundo:mongopassword@cluster0.tbzxf.mongodb.net/adoptme?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
