@@ -19,5 +19,9 @@ El proyecto también implementa un sistema de **loggers** para registrar eventos
 ### Middleware de Manejo de Errores  
 Además, se han integrado **middlewares de manejo de errores personalizados** que gestionan cualquier problema durante la generación de datos o interacciones con la base de datos. Estos middlewares capturan y responden con mensajes claros y consistentes, lo que mejora la robustez del servidor y la experiencia del desarrollador al enfrentar errores.
 
+#### CAMBIOS DE PREENTREGA
+Cambie la conexion de mi base de datos de manera local, y actualice el archivo js principal con la base de datos MongoDB Atlas. 
+Además modifique el comando para correr la aplicacion => "start": "node src/app.js", 
+
 **Creado por:**  
 Facundo Robert
