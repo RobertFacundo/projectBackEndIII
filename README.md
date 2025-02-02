@@ -21,7 +21,7 @@ Además, se han integrado **middlewares de manejo de errores personalizados** qu
 
 #### CAMBIOS DE PREENTREGA
 Cambie la conexion de mi base de datos de manera local, y actualice el archivo js principal con la base de datos MongoDB Atlas. 
-Además modifique el comando para correr la aplicacion => "start": "node src/app.js", 
+Además modifique el comando para correr la aplicacion => "start": "node src/app.js".
 
 **Creado por:**  
 Facundo Robert
