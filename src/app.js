@@ -14,8 +14,9 @@ import errorMiddleware from './middlewares/error.middleware.js';
 import loggerTestRouter from './routes/loggerTest.router.js';
 
 const app = express();
+dotenv.config();
 const PORT = process.env.PORT || 8080;
-const connection = mongoose.connect("mongodb+srv://robertfacundo:mongopassword!@cluster0.tbzxf.mongodb.net/adoptme?retryWrites=true&w=majority", {
+const connection = mongoose.connect('mongodb+srv://robertfacundo:mongopassword@cluster0.tbzxf.mongodb.net/adoptme?retryWrites=true&w=majority&appName=Cluster0', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
@@ -25,7 +26,7 @@ const connection = mongoose.connect("mongodb+srv://robertfacundo:mongopassword!@
 })
 .catch((error) => logger.error(`Error al conectar con MongoDB: ${error.message}`));
 
-dotenv.config();
+
 
 app.use(express.json());
 app.use(cookieParser());
