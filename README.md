@@ -23,5 +23,15 @@ Además, se han integrado **middlewares de manejo de errores personalizados** qu
 Cambie la conexion de mi base de datos de manera local, y actualice el archivo js principal con la base de datos MongoDB Atlas. 
 Además modifique el comando para correr la aplicacion => "start": "node src/app.js".
 
+--------------------------
+
+## Actividad práctica hacia la entrega final del proyecto
+
+### Implementación de Swagger y Archivos YAML
+
+Se ha integrado Swagger para facilitar la documentación y pruebas de nuestra API. Los archivos de configuración YAML(dentro del directorio /docs) son utilizados para definir y estructurar la documentación de la API de forma clara y ordenada, describiendo cada uno de los endpoints, parámetros, respuestas y posibles errores. Estos archivos son utilizados por Swagger para generar automáticamente la interfaz de usuario interactiva y asegurar que la API sea fácilmente accesible y comprensible. 
+
+La url correspondiente es => http://localhost:8080/docs/
+
 **Creado por:**  
 Facundo Robert

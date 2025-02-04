@@ -23,6 +23,7 @@ const createPet = async (req, res, next) => {
         const result = await petsService.create(pet);
         res.send({ status: 'success', payload: result });
     } catch (error) {
+        console.error('Error en createPet:', error.message);
         next(error)
     };
 };
@@ -37,6 +38,7 @@ const updatePet = async (req, res, next) => {
         }
         res.send({ status: 'success', message: 'Pet Updated' });
     } catch (error) {
+        console.log(error.message)
         next(error)
     }
 };

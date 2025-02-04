@@ -1,0 +1,204 @@
+openapi: 3.1.0
+info:
+  title: AdoptMe API
+  version: 1.0.0
+  description: API para gestionar usuarios, mascotas y adopciones
+paths:
+  /sessions/register:
+    post:
+      summary: Registrar un nuevo usuario
+      description: Registra un nuevo usuario en el sistema.
+      operationId: register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  example: "Juan"
+                last_name:
+                  type: string
+                  example: "Pérez"
+                email:
+                  type: string
+                  example: "juan.perez@example.com"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        "201":
+          description: Usuario registrado exitosamente
+        "400":
+          description: Error en los datos proporcionados
+  /sessions/login:
+    post:
+      summary: Iniciar sesión
+      description: Inicia sesión con las credenciales del usuario.
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "juan.perez@example.com"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        "200":
+          description: Inicio de sesión exitoso
+        "401":
+          description: Credenciales incorrectas
+  /sessions/current:
+    get:
+      summary: Obtener la sesión actual
+      description: Obtiene los detalles de la sesión actual del usuario.
+      operationId: getCurrentSession
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer <token>"
+          description: Token JWT para autenticar al usuario.
+      responses:
+        "200":
+          description: Datos de la sesión actual
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  user:
+                    type: object
+                    description: Datos del usuario autenticado.
+        "401":
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Token inválido o expirado.
+
+  /sessions/unprotectedLogin:
+    get:
+      summary: Login sin protección
+      description: Endpoint sin protección de autenticación.
+      operationId: unprotectedLogin
+      parameters:
+        - in: query
+          name: email
+          required: true
+          schema:
+            type: string
+            example: "user@example.com"
+          description: El correo electrónico del usuario.
+        - in: query
+          name: password
+          required: true
+          schema:
+            type: string
+            example: "yourpassword"
+          description: La contraseña del usuario.
+      responses:
+        '200':
+          description: Login sin protección exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Unprotected Logged in
+        '400':
+          description: Valores incompletos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Incomplete values
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: User doesn't exist
+        '401':
+          description: Contraseña incorrecta
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Incorrect password
+  /sessions/unprotectedCurrent:
+    get:
+      summary: Obtener sesión sin protección
+      description: Endpoint sin protección para obtener la sesión actual.
+      operationId: unprotectedCurrent
+      responses:
+        '200':
+          description: Datos de la sesión sin protección
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  user:
+                    type: object
+                    description: Datos del usuario autenticado sin protección.
+        '400':
+          description: Cookie no encontrada o token inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: No token found or invalid token.
