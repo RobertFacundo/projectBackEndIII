@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "test": "mocha test/supertest.test.js"
+    "test": "mocha tests/userDtoTest.test.js"
   },
   "keywords": [],
   "author": "",
@@ -29,7 +29,8 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
-    "chai": "^4.3.7",
-    "mocha": "^10.1.0"
+    "chai": "^4.5.0",
+    "mocha": "^10.8.2",
+    "mongodb-memory-server": "^10.1.3"
   }
 }

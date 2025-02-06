@@ -33,5 +33,17 @@ Se ha integrado Swagger para facilitar la documentación y pruebas de nuestra AP
 
 La url correspondiente es => http://localhost:8080/docs/
 
+### Implementaciones de Pruebas (Mocha, Chai)
+
+`Users.test.js`: Se incluyen pruebas para el modelo de usuario utilizando la base de datos en memoria con MongoMemoryServer. Las pruebas cubren la creación de un nuevo usuario, asegurando que se cree con un arreglo vacío de mascotas por defecto, y la obtención de un usuario por su correo electrónico.
+
+`chaiTest.test.js`: Implementa las mismas pruebas que Users.test.js, pero utilizando la librería de aserciones Chai para una sintaxis más legible y estructurada. Además, se agregan pruebas para actualizar y eliminar un usuario, verificando que estas acciones se realicen correctamente en la base de datos.
+
+`bcryptTest.test.js`: Se incluyen pruebas para verificar el correcto funcionamiento de bcrypt en el proceso de hash y comparación de contraseñas. Se asegura que el hash de la contraseña sea diferente al valor original y que la comparación de contraseñas funcione correctamente, tanto cuando coinciden como cuando no.
+
+`useDtoTest.test.js`: Se prueban las transformaciones aplicadas a los objetos UserDTO. Las pruebas verifican que el nombre y el apellido se unifiquen en una sola propiedad "name", y que las propiedades innecesarias como password, first_name y last_name sean eliminadas correctamente en la transformación del objeto.
+
+Para una correcta ejecución de las pruebas, se está utilizando mongodb-memory-server, dependencia que permite crear una instancia de MongoDB en memoria para realizar las pruebas de manera aislada y sin afectar una base de datos real.
+
 **Creado por:**  
 Facundo Robert
