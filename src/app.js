@@ -8,7 +8,8 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import path from 'path'
+import path from 'path';
+import multer from 'multer';
 
 import usersRouter from './routes/users.router.js';
 import petsRouter from './routes/pets.router.js';
@@ -58,6 +59,7 @@ app.use(cors())
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
 app.use(cookieParser());
 
 app.use('/loggerTest', loggerTestRouter);
@@ -67,8 +69,11 @@ app.use('/api/adoptions', adoptionsRouter);
 app.use('/api/sessions', sessionsRouter);
 app.use('/api/mocks', mockingRouter);
 
+app.use('/public', express.static('public'));
 
 app.use(errorMiddleware);
 
 
 app.listen(PORT, () => logger.info(`Listening on ${PORT}`))
+
+export default app;

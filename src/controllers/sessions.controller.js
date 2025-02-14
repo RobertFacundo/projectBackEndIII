@@ -45,35 +45,47 @@ const current = async (req, res) => {
 
 const unprotectedLogin = async (req, res) => {
     const { email, password } = req.body;
+    console.log(email, password);
     if (!email || !password) return res.status(400).send({ status: "error", error: "Incomplete values" });
     const user = await usersService.getUserByEmail(email);
+    console.log(user)
     if (!user) return res.status(404).send({ status: "error", error: "User doesn't exist" });
     const isValidPassword = await passwordValidation(user, password);
     if (!isValidPassword) return res.status(400).send({ status: "error", error: "Incorrect password" });
-    const token = jwt.sign(user, 'tokenSecretJWT', { expiresIn: "1h" });
-    res.cookie('unprotectedCookie', token, { maxAge: 3600000 }).send({ status: "success", message: "Unprotected Logged in" })
+    const token = jwt.sign({
+        id: user._id,
+        email: user.email,
+        name: `${user.first_name} ${user.last_name}`,
+        age: user.age,
+    }, 'tokenSecretJWT', { expiresIn: "1h" });
+    res.cookie('unprotectedCookie', token, { maxAge: 3600000, httpOnly: true }).send({ status: "success", message: "Unprotected Logged in" })
 }
 const unprotectedCurrent = async (req, res) => {
-    try {
-        const cookie = req.cookies['unprotectedCookie'];
+    const token = req.cookies['unprotectedCookie']; 
 
-        if (!cookie) {
-            return res.send({
-                status: "success",
-                message: "No token provided, and session is unprotected."
-            });
+    if (!token) {
+        return res.status(400).send({ status: "error", error: "No token found" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, 'tokenSecretJWT');
+        const user = await usersService.getUserById(decoded.id);  
+
+        if (!user) {
+            return res.status(404).send({ status: "error", error: "User not found" });
         }
 
-        const user = jwt.verify(cookie, 'tokenSecretJWT');
-        return res.send({
+        const fullName = `${user.first_name} ${user.last_name}`;
+        res.send({
             status: "success",
-            payload: user
+            payload: {
+                email: user.email,
+                name: fullName, 
+                role: user.role,
+            }
         });
-    } catch (error) {
-        return res.status(400).send({
-            status: "error",
-            error: "No token found or invalid token."
-        });
+    } catch (err) {
+        return res.status(400).send({ status: "error", error: "Invalid token" });
     }
 }
 export default {
