@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { generateMockUsers } from '../utils/mockUsers.js';
-import { generateMockPets } from '../utils/mockPets.js';
+import { generateMockProducts } from '../utils/mockProducts.js';
 import userModel from "../dao/models/User.js";
-import petModel from "../dao/models/Pet.js";
+import productModel from "../dao/models/Product.js";
 
 const router = Router();
 
-router.get('/mockingpets', (req, res) => {
-    const pets = generateMockPets(10);
-    res.json(pets);
+router.get('/mockingproducts', (req, res) => {
+    const products = generateMockProducts(10);
+    res.json(products);
 });
 
 router.get('/mockingusers', (req, res) => {
@@ -21,15 +21,15 @@ router.post('/generateData', async (req, res) => {
 
     try {
         const mockUsers = generateMockUsers(users);
-        const mockPets = generateMockPets(pets)
+        const mockProducts = generateMockProducts(pets)
 
         await userModel.insertMany(mockUsers);
-        await petModel.insertMany(mockPets);
+        await productModel.insertMany(mockProducts);
 
         res.status(201).json({
             message: 'Datos generados e insertados exitosamente', 
             usersInserted: users,
-            petsInserted: pets
+            productsInserted: products
         });
     } catch (error) {
         res.status(400).json({ message: 'Error al generar datos', error: error.message })

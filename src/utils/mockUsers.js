@@ -12,7 +12,7 @@ export function generateMockUsers(count) {
             email: faker.internet.email(),
             password: passwordHash,
             role: faker.helpers.arrayElement(['user', 'admin']),
-            pets: [],
+            cart: [],
         }); 
     }
     return users;

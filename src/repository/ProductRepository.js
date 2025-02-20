@@ -1,7 +1,7 @@
 import GenericRepository from "./GenericRepository.js";
 
-export default class PetRepository extends GenericRepository {
+export default class ProductRepository extends GenericRepository {
     constructor(dao) {
-        super(dao);
+        super(dao)
     }
 }

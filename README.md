@@ -43,7 +43,38 @@ La url correspondiente es => http://localhost:8080/docs/
 
 `useDtoTest.test.js`: Se prueban las transformaciones aplicadas a los objetos UserDTO. Las pruebas verifican que el nombre y el apellido se unifiquen en una sola propiedad "name", y que las propiedades innecesarias como password, first_name y last_name sean eliminadas correctamente en la transformación del objeto.
 
+`superTestPets.test.js`: Incluye la prueba de los endpoints de mascota y Pruebas para crear una mascota con imagen
+
+- POST /api/pets/withimage - Crear una mascota con imagen 
+
+Se prueba el proceso de creación de una mascota, pero esta vez con una imagen adjunta. La imagen se lee desde una ruta local (../public/img/test-image.jpg), y se envía como parte de la solicitud usando el método .attach().
+Verifica que la mascota se haya creado correctamente con la imagen y que la imagen esté presente en la respuesta.
+
 Para una correcta ejecución de las pruebas, se está utilizando mongodb-memory-server, dependencia que permite crear una instancia de MongoDB en memoria para realizar las pruebas de manera aislada y sin afectar una base de datos real.
+
+## Reestructuración del Proyecto y Nuevas Funcionalidades
+En lugar de utilizar modelos relacionados con "adoption" y "pets", se ha incorporado un modelo de producto que permite gestionar los artículos de un catálogo en línea.
+
+La reestructuración incluye la creación de los niveles de abstracción necesarios para manejar los productos, tales como el DAO, services, y controllers. Además, se han implementado rutas para interactuar con los productos a través de una API.
+
+### Rutas Disponibles // Ejemplo de Ruta POST para Crear un Producto
+http://localhost:8080/api/products 
+
+{
+    "name": "Laptop Gaming",
+    "description": "Potente laptop con GPU dedicada",
+    "price": 1500,
+    "stock": 10,
+    "category": "Electronics",
+    "imageUrl": "https://example.com/laptop.jpg"
+}
+
+----------------------
+Además tambien se agregó un campo cart a la creacion de un nuevo user, permitiendo poder agregar y eliminar productos al carro del usuario
+
+POST http://localhost:8080/api/users/:uid/cart/:pid
+DELETE http://localhost:8080/api/users/:uid/cart/:pid
+
 
 **Creado por:**  
 Facundo Robert

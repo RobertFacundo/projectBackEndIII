@@ -18,6 +18,21 @@ const errorDictionary = {
         message: 'No se ha encontrado la mascota',
         code: 402,
         suggestion: 'Asegurate que la PetId es correcta',
+    },
+    PRODUCT_NOT_FOUND: {
+        message: 'Producto no encontrado',
+        code: 404,
+        suggestion: 'Asegurate que la id es correcta'
+    },
+    USER_ALREADY_EXISTS:{
+        message: 'Usuario ya existe',
+        code: 500,
+        suggestion: 'Invoca otros valores'
+    },
+    PRODUCT_NOT_IN_CART:{
+        message: 'Producto no encontrado en el carro',
+        code:404,
+        suggestion: 'Intenta con otro product ID'
     }
 
 }

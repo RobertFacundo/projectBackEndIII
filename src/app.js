@@ -12,8 +12,7 @@ import path from 'path';
 import multer from 'multer';
 
 import usersRouter from './routes/users.router.js';
-import petsRouter from './routes/pets.router.js';
-import adoptionsRouter from './routes/adoption.router.js';
+import productsRouter from './routes/products.router.js'
 import sessionsRouter from './routes/sessions.router.js';
 
 import mockingRouter from './routes/mocks.router.js';
@@ -23,17 +22,17 @@ import loggerTestRouter from './routes/loggerTest.router.js';
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 8080;
-mongoose.connect('mongodb+srv://robertfacundo:mongopassword@cluster0.tbzxf.mongodb.net/adoptme?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
-.then((connection) => {
-    logger.info('Conexion exitosa  con MongoDB');
-    logger.debug(`MongoDB connection details: ${connection.connections[0].host}:${connection.connections[0].port}`)
-})
-.catch((error) => logger.error(`Error al conectar con MongoDB: ${error.message}`));
+    .then((connection) => {
+        logger.info('Conexion exitosa  con MongoDB');
+        logger.debug(`MongoDB connection details: ${connection.connections[0].host}:${connection.connections[0].port}`)
+    })
+    .catch((error) => logger.error(`Error al conectar con MongoDB: ${error.message}`));
 
-const __filename = fileURLToPath(import.meta.url); 
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const swaggerOptions = {
@@ -59,13 +58,12 @@ app.use(cors())
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); 
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/loggerTest', loggerTestRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/pets', petsRouter);
-app.use('/api/adoptions', adoptionsRouter);
+app.use('/api/products', productsRouter)
 app.use('/api/sessions', sessionsRouter);
 app.use('/api/mocks', mockingRouter);
 
