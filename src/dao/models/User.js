@@ -28,8 +28,15 @@ const schema = new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'Carts',
         default: null
-    }
-})
+    },
+    documents: [
+        {
+            name: { type: String, required: true },
+            reference: { type: String, required: true },
+        }
+    ],
+    last_connection: { type: Date, default: null }
+}, { timestamps: true })
 
 const userModel = mongoose.model(collection, schema);
 

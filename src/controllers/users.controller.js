@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
+import { getDestination } from '../utils/uploader.js'
 import { productService, usersService } from "../services/index.js";
 import { createError } from "../utils/customError.js";
 import errorDictionary from "../utils/errorDictionary.js";
@@ -144,9 +145,17 @@ const addProductToCart = async (req, res, next) => {
             return next(createError('USER_NOT_FOUND', errorDictionary.USER_NOT_FOUND));
         }
 
-        const cart = await cartModel.findById(user.cart);
+        let cart = await cartModel.findById(user.cart);
         if (!cart) {
-            return next(createError('DATABASE_ERROR', errorDictionary.DATABASE_ERROR, new Error('No se encontró el carrito del usuario')))
+            // Crear el carrito vacío con la referencia al usuario
+            cart = await cartModel.create({
+                products: [],
+                user: userId // Asignar el usuario al carrito
+            });
+
+            // Asocia el carrito al usuario
+            user.cart = cart._id;
+            await user.save();
         }
 
         const productInCart = cart.products.find(p => p.product.toString() === productId);
@@ -190,11 +199,53 @@ const deleteProductFromCart = async (req, res, next) => {
             return next(createError('PRODUCT_NOT_IN_CART', errorDictionary.PRODUCT_NOT_IN_CART))
         }
 
-        cart.products.splice(productIndex, 1);
+        if (cart.products[productIndex].quantity > 1) {
+            cart.products[productIndex].quantity -= 1;
+        } else {
+            cart.products.splice(productIndex, 1)
+        }
 
         await cart.save();
 
         res.send({ status: 'success', message: 'Producto eliminado del carro', payload: cart });
+    } catch (error) {
+        next(createError('DATABASE_ERROR', errorDictionary.DATABASE_ERROR, error))
+    }
+}
+
+const uploadDocuments = async (req, res, next) => {
+    const userId = req.params.uid;
+    console.log(userId)
+    const files = req.files;
+
+    if (!files || files.length === 0) {
+        return next(createError('NOT_FILES_UPLOADED', errorDictionary.NOT_FILES_UPLOADED));
+    }
+
+    try {
+        const user = await usersService.getUserById(userId);
+        if (!user) {
+            return next(createError('USER_NOT_FOUND', errorDictionary.USER_NOT_FOUND));
+        }
+
+        const documents = files.map(file => ({
+            name: file.originalname,
+            reference: `/public/${getDestination(file)}/${file.filename}`,
+        }));
+
+        user.documents.push(...documents);
+        user.last_connection = new Date();
+
+        await user.save();
+
+        return res.status(200).send({
+            status: 'success',
+            message: 'Files subidos exitosamente',
+            user: {
+                id: user._id,
+                documents: user.documents,
+            }
+        })
     } catch (error) {
         next(createError('DATABASE_ERROR', errorDictionary.DATABASE_ERROR, error))
     }
@@ -207,5 +258,6 @@ export default {
     updateUser,
     createUser,
     addProductToCart,
-    deleteProductFromCart
+    deleteProductFromCart,
+    uploadDocuments
 }

@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import usersController from '../controllers/users.controller.js';
+import { authenticateJWT } from '../middlewares/authMiddleware.js';
+import uploader from '../utils/uploader.js';
 
 const router = Router();
 
@@ -9,8 +11,10 @@ router.get('/:uid', usersController.getUser);
 router.put('/:uid', usersController.updateUser);
 router.delete('/:uid', usersController.deleteUser);
 
-router.post('/:uid/cart/:pid', usersController.addProductToCart);
-router.delete('/:uid/cart/:pid', usersController.deleteProductFromCart);
+router.post('/:uid/cart/:pid', authenticateJWT, usersController.addProductToCart);
+router.delete('/:uid/cart/:pid', authenticateJWT, usersController.deleteProductFromCart);
+
+router.post('/:uid/documents', uploader, usersController.uploadDocuments)
 
 
 export default router;

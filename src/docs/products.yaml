@@ -1,0 +1,107 @@
+openapi: 3.0.0
+info:
+  title: Products API
+  version: 1.0.0
+paths:
+  /products:
+    get:
+      summary: Get all products
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          example: "60d5b2c4f9e6c700171ce7d3"
+                        name:
+                          type: string
+                          example: "Laptop Dell XPS 15"
+                        description:
+                          type: string
+                          example: "High-performance laptop with 16GB RAM and 512GB SSD"
+                        price:
+                          type: number
+                          example: 1299.99
+                        imageUrl:
+                          type: string
+                          example: "https://example.com/laptop.jpg"
+                        category:
+                          type: string
+                          example: "XPS15-2024"
+                        stock:
+                          type: integer
+                          example: 10
+    post:
+      summary: Create a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Smartphone Samsung Galaxy S21"
+                description:
+                  type: string
+                  example: "Latest Samsung smartphone with 128GB storage and 8GB RAM"
+                price:
+                  type: number
+                  example: 799.99
+                imageUrl:
+                  type: string
+                  example: "https://example.com/smartphone.jpg"
+                category:
+                  type: string
+                  example: "Electronic"
+                stock:
+                  type: integer
+                  example: 25
+      responses:
+        "201":
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d4"
+                      name:
+                        type: string
+                        example: "Smartphone Samsung Galaxy S21"
+                      description:
+                        type: string
+                        example: "Latest Samsung smartphone with 128GB storage and 8GB RAM"
+                      price:
+                        type: number
+                        example: 799.99
+                      imageUrl:
+                        type: string
+                        example: "https://example.com/smartphone.jpg"
+                      category:
+                        type: string
+                        example: "Electronic"
+                      stock:
+                        type: integer
+                        example: 25

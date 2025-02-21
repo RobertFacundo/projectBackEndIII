@@ -75,6 +75,24 @@ Además tambien se agregó un campo cart a la creacion de un nuevo user, permiti
 POST http://localhost:8080/api/users/:uid/cart/:pid
 DELETE http://localhost:8080/api/users/:uid/cart/:pid
 
+### Carga de documentos
+Se implementa POST /:uid/documents permite a los usuarios cargar documentos y imágenes. Los archivos se procesan con multer, se guardan en las carpetas products o documents dependiendo del tipo de archivo, y se asocian con el usuario correspondiente. En caso de éxito, se devuelven los documentos cargados, o un mensaje de error si no se subieron archivos o si ocurrió un problema con la base de datos.
+
+### Tests y Documentacion
+Bajo los siguientes scripts estan testeadas todas las funcionalidades y routes de products, sessions y users: 
+
+    "userTest": "mocha tests/Users.test.js",
+    "testProduct":"mocha tests/productsTest.test.js",
+    "sessionstest": "mocha tests/sessionsTest.test.js"
+
+Las funcionalidades de products y users se encuentran en los archivos 
+`products.yaml`
+`users.yaml`
+
+Se puede verificar la url de la documentacion swagger en => http://localhost:8080/docs/
+
+//borrar consoles// handlebars
+
 
 **Creado por:**  
 Facundo Robert

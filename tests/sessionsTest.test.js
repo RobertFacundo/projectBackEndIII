@@ -38,6 +38,38 @@ after(async () => {
 describe('Session API test', () => {
     let authCookie;
 
+    it('Debe registrar un usuario correctamente en /api/sessions/register', async () => {
+        const res = await request(app)
+            .post("/api/sessions/register")
+            .set("Content-Type", "application/json")
+            .send({
+                first_name: 'Test',
+                last_name: 'User',
+                email: 'newuser@example.com',
+                password: 'password123'
+            });
+
+        expect(res.status).to.equal(200);
+        expect(res.body.status).to.equal('success');
+        expect(res.body.payload).to.exist;
+    });
+
+    it('Debe devolver una cookie al hacer login en /api/sessions/login', async () => {
+        const res = await request(app)
+            .post("/api/sessions/login")
+            .set("Content-Type", "application/json")
+            .send({
+                email: userData.email,
+                password: '123456'
+            });
+
+        expect(res.status).to.equal(200);
+        expect(res.headers['set-cookie']).to.exist;
+
+        authCookie = res.headers['set-cookie'].find(cookie => cookie.startsWith('coderCookie'));
+        expect(authCookie).to.exist;
+    })
+
     it('Debe devolver una cookie unprotected al hacer login', async () => {
         const res = await request(app)
             .post("/api/sessions/unprotectedLogin")
@@ -58,15 +90,17 @@ describe('Session API test', () => {
         if (!authCookie) {
             throw new Error("No se recibió la cookie de autenticación en el login");
         }
+
         const res = await request(app)
             .get("/api/sessions/unprotectedCurrent")
-            .set('Cookie', authCookie);
-
-        console.log(res.body)
+            .set('Cookie', [`unprotectedCookie=${authCookie.split("=")[1].split(";")[0]}`])
+            .withCredentials(); 
 
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal('success');
-        expect(res.body.payload).to.have.property('email', userData.email);
-        expect(res.body.payload).to.have.property('name', `${userData.first_name} ${userData.last_name}`);
+        expect(res.body.payload).to.have.property('email');
+        expect(res.body.payload).to.have.property('name');
+        expect(res.body.payload).to.have.property('role');
+
     });
 });

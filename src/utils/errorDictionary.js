@@ -14,11 +14,6 @@ const errorDictionary = {
         code: 404,
         suggestion: 'Asegúrate de que el usuario existe antes de realizar esta operación.',
     },
-    PET_NOT_FOUND: {
-        message: 'No se ha encontrado la mascota',
-        code: 402,
-        suggestion: 'Asegurate que la PetId es correcta',
-    },
     PRODUCT_NOT_FOUND: {
         message: 'Producto no encontrado',
         code: 404,
@@ -33,6 +28,11 @@ const errorDictionary = {
         message: 'Producto no encontrado en el carro',
         code:404,
         suggestion: 'Intenta con otro product ID'
+    },
+    NOT_FILES_UPLOADED:{
+        message: 'No se han subido los archivos',
+        code: 400,
+        suggestion:'intenta subir imagenes o documentos'
     }
 
 }

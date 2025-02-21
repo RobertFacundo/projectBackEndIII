@@ -1,5 +1,9 @@
+import './config/passportConfig.js';
 import express from 'express';
 import mongoose from 'mongoose';
+import session from 'express-session';
+import passport from 'passport';
+import MongoStore from 'connect-mongo'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
@@ -21,6 +25,26 @@ import loggerTestRouter from './routes/loggerTest.router.js';
 
 const app = express();
 dotenv.config();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+app.use(session({
+    secret: 'yourSecret',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI,
+        ttl: 3600
+    }),
+    cookie: { secure: false }
+}));
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 const PORT = process.env.PORT || 8080;
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -39,9 +63,9 @@ const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
-            title: 'AdoptMe API',
+            title: 'Ecommerce API',
             version: '1.0.0',
-            description: 'API para gestionar usuarios, mascotas y adopciones',
+            description: 'API para gestionar funcionalidades de ecommerce',
         },
         servers: [
             {
@@ -56,10 +80,6 @@ const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
 app.use(cors())
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 app.use('/loggerTest', loggerTestRouter);
 app.use('/api/users', usersRouter);

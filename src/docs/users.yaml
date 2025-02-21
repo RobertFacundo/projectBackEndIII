@@ -1,0 +1,232 @@
+openapi: 3.1.0
+info:
+  title: Ecommerce - Users
+  version: 1.0.0
+  description: API para gestionar usuarios
+paths:
+  /users:
+    get:
+      summary: Obtener todos los usuarios
+      description: Retorna la lista de todos los usuarios registrados.
+      operationId: getAllUsers
+      responses:
+        "200":
+          description: Lista de usuarios obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          example: "60d5b2c4f9e6c700171ce7d1"
+                        first_name:
+                          type: string
+                          example: "Juan"
+                        last_name:
+                          type: string
+                          example: "Pérez"
+                        email:
+                          type: string
+                          example: "juan.perez@example.com"
+                        cart:
+                          type: string
+                          example: "60d5b2c4f9e6c700171ce7d2"
+        "500":
+          description: Error en la base de datos
+
+    post:
+      summary: Crear un nuevo usuario
+      description: Registra un usuario en la base de datos y le asigna un carrito vacío.
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  example: "Juan"
+                last_name:
+                  type: string
+                  example: "Pérez"
+                email:
+                  type: string
+                  example: "juan.perez@example.com"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        "201":
+          description: Usuario creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d1"
+                      first_name:
+                        type: string
+                        example: "Juan"
+                      last_name:
+                        type: string
+                        example: "Pérez"
+                      email:
+                        type: string
+                        example: "juan.perez@example.com"
+                      cart:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d2"
+        "400":
+          description: Datos incorrectos o usuario ya existente
+
+  /users/{id}:
+    get:
+      summary: Obtener un usuario por ID
+      description: Obtiene la información de un usuario específico por su ID.
+      operationId: getUserById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            example: "60d5b2c4f9e6c700171ce7d1"
+          description: ID del usuario
+      responses:
+        "200":
+          description: Usuario obtenido correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d1"
+                      first_name:
+                        type: string
+                        example: "Juan"
+                      last_name:
+                        type: string
+                        example: "Pérez"
+                      email:
+                        type: string
+                        example: "juan.perez@example.com"
+                      cart:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d2"
+        "404":
+          description: Usuario no encontrado
+
+    put:
+      summary: Actualizar un usuario por ID
+      description: Modifica los datos de un usuario en la base de datos.
+      operationId: updateUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            example: "60d5b2c4f9e6c700171ce7d1"
+          description: ID del usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  example: "Juan"
+                last_name:
+                  type: string
+                  example: "Pérez"
+                email:
+                  type: string
+                  example: "juan.perez@example.com"
+      responses:
+        "200":
+          description: Usuario actualizado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d1"
+                      first_name:
+                        type: string
+                        example: "Juan"
+                      last_name:
+                        type: string
+                        example: "Pérez"
+                      email:
+                        type: string
+                        example: "juan.perez@example.com"
+        "400":
+          description: Datos inválidos
+        "404":
+          description: Usuario no encontrado
+
+    delete:
+      summary: Eliminar un usuario por ID
+      description: Borra un usuario de la base de datos.
+      operationId: deleteUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            example: "60d5b2c4f9e6c700171ce7d1"
+          description: ID del usuario
+      responses:
+        "200":
+          description: Usuario eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Usuario eliminado correctamente
+        "404":
+          description: Usuario no encontrado
