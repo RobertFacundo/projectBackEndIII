@@ -85,11 +85,18 @@ Bajo los siguientes scripts estan testeadas todas las funcionalidades y routes d
     "testProduct":"mocha tests/productsTest.test.js",
     "sessionstest": "mocha tests/sessionsTest.test.js"
 
-Las funcionalidades de products y users se encuentran en los archivos 
+Las documentaciones pertinentes a products y users se encuentran en los archivos 
 `products.yaml`
 `users.yaml`
 
-Se puede verificar la url de la documentacion swagger en => http://localhost:8080/docs/
+Se puede verificar la url de la documentacion swagger en => http://localhost:8080/docs/ 
+ Y para facilitar la verificación de los endpoints proporciono valores de ejemplos de la base de datos => 
+- uid = 67b773fda16a5f85687c83f3
+- pid = 67b74d829266981086180ab1
+{
+  "email": "user8.test@example.com",
+  "password": "123"
+}
 
 //borrar consoles// handlebars
 

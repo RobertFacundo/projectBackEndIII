@@ -215,7 +215,6 @@ const deleteProductFromCart = async (req, res, next) => {
 
 const uploadDocuments = async (req, res, next) => {
     const userId = req.params.uid;
-    console.log(userId)
     const files = req.files;
 
     if (!files || files.length === 0) {

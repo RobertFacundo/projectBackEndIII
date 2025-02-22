@@ -3,6 +3,14 @@ info:
   title: Ecommerce - Users
   version: 1.0.0
   description: API para gestionar usuarios
+
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
 paths:
   /users:
     get:
@@ -27,16 +35,16 @@ paths:
                       properties:
                         _id:
                           type: string
-                          example: "60d5b2c4f9e6c700171ce7d1"
+                          example: "67b773fda16a5f85687c83f3"
                         first_name:
                           type: string
-                          example: "Juan"
+                          example: "UserPrueba"
                         last_name:
                           type: string
-                          example: "Pérez"
+                          example: "test"
                         email:
                           type: string
-                          example: "juan.perez@example.com"
+                          example: "testSwagger@example.com"
                         cart:
                           type: string
                           example: "60d5b2c4f9e6c700171ce7d2"
@@ -56,13 +64,13 @@ paths:
               properties:
                 first_name:
                   type: string
-                  example: "Juan"
+                  example: "UserPrueba"
                 last_name:
                   type: string
-                  example: "Pérez"
+                  example: "test"
                 email:
                   type: string
-                  example: "juan.perez@example.com"
+                  example: "testSwagger@example.com"
                 password:
                   type: string
                   example: "password123"
@@ -82,19 +90,30 @@ paths:
                     properties:
                       _id:
                         type: string
-                        example: "60d5b2c4f9e6c700171ce7d1"
+                        example: "67b8ac5e95cc39fcd1ae2ca4"
                       first_name:
                         type: string
-                        example: "Juan"
+                        example: "Usertest"
                       last_name:
                         type: string
-                        example: "Pérez"
+                        example: "Swagger"
                       email:
                         type: string
-                        example: "juan.perez@example.com"
+                        example: "testSwgagger@example.com"
                       cart:
                         type: string
                         example: "60d5b2c4f9e6c700171ce7d2"
+                      documents:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: "document.pdf"
+                            reference:
+                              type: string
+                              example: "/public/uploads/123456789/document.pdf"
         "400":
           description: Datos incorrectos o usuario ya existente
 
@@ -230,3 +249,285 @@ paths:
                     example: Usuario eliminado correctamente
         "404":
           description: Usuario no encontrado
+
+  /users/{uid}/documents:
+    post:
+      summary: Subir documentos de usuario
+      description: Permite a un usuario subir uno o más documentos asociados a su cuenta.
+      operationId: uploadUserDocuments
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+            example: "67b8ac5e95cc39fcd1ae2ca4"
+          description: ID del usuario
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Archivos a subir (pueden ser múltiples)
+      responses:
+        "200":
+          description: Documento(s) subido(s) correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: "Files subidos exitosamente"
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "67b8ac5e95cc39fcd1ae2ca4"
+                      documents:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: "document.pdf"
+                            reference:
+                              type: string
+                              example: "/public/uploads/123456789/document.pdf"
+        "400":
+          description: Archivo no válido o usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "NOT_FILES_UPLOADED"
+                  message:
+                    type: string
+                    example: "No se subieron archivos. Por favor, intenta nuevamente."
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "USER_NOT_FOUND"
+                  message:
+                    type: string
+                    example: "El usuario con el ID proporcionado no fue encontrado."
+        "500":
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "INTERNAL_SERVER_ERROR"
+                  message:
+                    type: string
+                    example: "Algo salió mal, por favor inténtalo de nuevo más tarde."
+
+  /users/{uid}/cart/{pid}:
+    post:
+      summary: Agregar un producto al carrito de un usuario
+      description: Permite agregar un producto al carrito de un usuario. Si el carrito no existe, se crea uno nuevo.
+      operationId: addProductToCart
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+            example: "67b8ac5e95cc39fcd1ae2ca4"
+          description: ID del usuario
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+            example: "5f50b7bc2a2b4c10d88c5738"
+          description: ID del producto
+      security:
+        - Bearer: []
+      responses:
+        "200":
+          description: Producto agregado al carrito exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: "Producto agregado al carro"
+                  payload:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "5f50b7bc2a2b4c10d88c5738"
+                      products:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            product:
+                              type: string
+                              example: "5f50b7bc2a2b4c10d88c5738"
+                            quantity:
+                              type: integer
+                              example: 1
+        "400":
+          description: Error al agregar el producto al carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "PRODUCT_NOT_FOUND"
+                  message:
+                    type: string
+                    example: "El producto no fue encontrado."
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "USER_NOT_FOUND"
+                  message:
+                    type: string
+                    example: "El usuario con el ID proporcionado no fue encontrado."
+        "500":
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "DATABASE_ERROR"
+                  message:
+                    type: string
+                    example: "Algo salió mal, por favor inténtalo de nuevo más tarde."
+
+    delete:
+      summary: Eliminar un producto del carrito de un usuario
+      description: Permite eliminar un producto del carrito de un usuario. Si el producto no está en el carrito, no se realiza ninguna acción.
+      operationId: deleteProductFromCart
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+            example: "67b8ac5e95cc39fcd1ae2ca4"
+          description: ID del usuario
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+            example: "5f50b7bc2a2b4c10d88c5738"
+          description: ID del producto
+      security:
+        - Bearer: []
+      responses:
+        "200":
+          description: Producto eliminado del carrito exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: "Producto eliminado del carro"
+                  payload:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "5f50b7bc2a2b4c10d88c5738"
+                      products:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            product:
+                              type: string
+                              example: "5f50b7bc2a2b4c10d88c5738"
+                            quantity:
+                              type: integer
+                              example: 1
+        "400":
+          description: Error al eliminar el producto del carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "PRODUCT_NOT_IN_CART"
+                  message:
+                    type: string
+                    example: "El producto no está en el carrito."
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "USER_NOT_FOUND"
+                  message:
+                    type: string
+                    example: "El usuario con el ID proporcionado no fue encontrado."
+        "500":
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "DATABASE_ERROR"
+                  message:
+                    type: string
+                    example: "Algo salió mal, por favor inténtalo de nuevo más tarde."

@@ -47,10 +47,10 @@ paths:
               properties:
                 email:
                   type: string
-                  example: "juan.perez@example.com"
+                  example: "user39.test@example.com"
                 password:
                   type: string
-                  example: "password123"
+                  example: "123"
       responses:
         "200":
           description: Inicio de sesión exitoso
