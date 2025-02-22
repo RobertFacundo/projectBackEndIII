@@ -7,7 +7,6 @@ import passport from "passport";
 import UserDTO from '../dto/User.dto.js';
 
 const register = async (req, res) => {
-    console.log('inicializando register')
     try {
         const { first_name, last_name, email, password } = req.body;
         if (!first_name || !last_name || !email || !password) return res.status(400).send({ status: "error", error: "Incomplete values" });
@@ -21,7 +20,6 @@ const register = async (req, res) => {
             password: hashedPassword
         }
         let result = await usersService.create(user);
-        console.log(result, 'result dedsde el register')
 
         const newCart = await cartModel.create({
             user: result._id,
@@ -31,9 +29,16 @@ const register = async (req, res) => {
 
         await usersService.update(result._id, result);
 
-        res.status(201).send({ status: "success",message:'Usuario registrado cexitosamente', payload: result._id });
+        if (req.is('json')) {
+            return res.status(201).send({
+                status: "success",
+                message: 'Usuario registrado exitosamente',
+                payload: result._id
+            });
+        } else {
+            return res.redirect('/login');
+        }
     } catch (error) {
-        console.error(error.message);
         res.status(500).send({ status: "error", error: "Error", message: error.message });
     }
 }
@@ -42,12 +47,10 @@ const login = async (req, res, next) => {
 
     passport.authenticate('local', async (err, user, info) => {
         if (err) {
-            console.error('Error en autenticación:', err);
-            return next(err); // Manejo de errores
+            return next(err); 
         }
 
         if (!user) {
-            console.log('Usuario no encontrado o contraseña incorrecta');
             return res.status(401).send({ status: 'error', error: info.message });
         }
 
@@ -61,30 +64,30 @@ const login = async (req, res, next) => {
                 user.last_connection = new Date();
                 await user.save();
 
-                // Generación del DTO y el token JWT
                 const userDto = UserDTO.getUserTokenFrom(user);
                 if (!userDto) {
                     return res.status(500).send({ status: 'error', error: 'Error generando el token JWT' });
                 }
 
-                // Firmar el token con JWT
                 const token = jwt.sign(userDto, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-                // Enviar el token en la cookie
                 res.cookie('coderCookie', token, { maxAge: 3600000, httpOnly: true });
 
-                // Responder con éxito y los detalles del usuario
-                return res.send({
-                    status: 200,
-                    message: 'Logged in',
-                    user: {
-                        email: user.email,
-                        name: `${user.first_name} ${user.last_name}`,
-                        role: user.role,
-                        id: user._id,
-                    },
-                    token,
-                });
+                if (req.is('json')) {
+                    return res.status(200).send({
+                        status: 'success',
+                        message: 'Logged in',
+                        user: {
+                            email: user.email,
+                            name: `${user.first_name} ${user.last_name}`,
+                            role: user.role,
+                            id: user._id,
+                        },
+                        token,
+                    });
+                } else {
+                    return res.redirect('/home');  
+                }
             });
         } catch (error) {
             return res.status(500).send({ status: 'error', error: 'Error generando el token JWT' });
