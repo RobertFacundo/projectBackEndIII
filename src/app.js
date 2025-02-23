@@ -20,6 +20,7 @@ import errorMiddleware from './middlewares/error.middleware.js';
 import { productService } from './services/index.js';
 import usersController from './controllers/users.controller.js';
 
+import homeRouter from './routes/home.router.js';
 import usersRouter from './routes/users.router.js';
 import productsRouter from './routes/products.router.js'
 import sessionsRouter from './routes/sessions.router.js';
@@ -27,6 +28,7 @@ import mockingRouter from './routes/mocks.router.js';
 import loggerTestRouter from './routes/loggerTest.router.js';
 
 import './config/passportConfig.js';
+import connectDB from './config/db.config.js';
 
 dotenv.config();
 
@@ -64,16 +66,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-    .then((connection) => {
-        logger.info('Conexion exitosa  con MongoDB');
-        logger.debug(`MongoDB connection details: ${connection.connections[0].host}:${connection.connections[0].port}`)
-    })
-    .catch((error) => logger.error(`Error al conectar con MongoDB: ${error.message}`));
-
+connectDB()
 
 const swaggerOptions = {
     swaggerDefinition: {
@@ -102,6 +95,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/products', productsRouter)
 app.use('/api/sessions', sessionsRouter);
 app.use('/api/mocks', mockingRouter);
+app.use('/home', homeRouter)
 
 app.get('/', (req, res) => {
     res.render('register', { title: 'Registrese' });
@@ -110,38 +104,6 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     res.render('login', { title: 'Iniciar Sesión' });
 });
-
-app.get('/home', async (req, res) => {
-    if (req.session.user) {
-        try {
-            const products = await productService.getAll();
-            const productsCleaned = products.map(product => ({
-                name: product.name,
-                description: product.description,
-                price: product.price,
-                imageUrl: product.imageUrl || 'default-image.jpg',
-                _id : product._id
-            }));
-
-            res.render('home', {
-                user: {
-                    ...req.session.user,
-                    _id:req.session.user._id,
-                    cartId: req.session.user.cart,
-                    name: `${req.session.user.first_name} ${req.session.user.last_name}`
-                },
-                products: productsCleaned,
-                title: 'Bienvenido al Ecommerce BackEndIII'
-            });
-        } catch (error) {
-            console.error("Error al obtener productos:", error);
-            res.status(500).send("Error al obtener productos");
-        }
-    } else {
-        res.redirect('/login');
-    }
-})
-
 
 
 app.use(errorMiddleware);

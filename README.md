@@ -93,6 +93,8 @@ Se puede verificar la url de la documentacion swagger en => http://localhost:808
  Y para facilitar la verificación de los endpoints proporciono valores de ejemplos de la base de datos => 
 - uid = 67b773fda16a5f85687c83f3
 - pid = 67b74d829266981086180ab1
+
+Y para realizar un login =>
 {
   "email": "user8.test@example.com",
   "password": "123"
