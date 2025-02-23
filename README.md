@@ -99,7 +99,6 @@ Se puede verificar la url de la documentacion swagger en => http://localhost:808
 }
 
 ### Handlebars
-
 Para mejorar la presentacion se agregó un renderizado con handlebars en donde un usuario puede registrarse, hacer login, ver un home con su carro y los productos de la base de datos; en dicho home el usuario puede agregar productos a su carro y visualizarlos.
 
 
