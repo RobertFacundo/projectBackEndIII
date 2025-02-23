@@ -60,7 +60,6 @@ const createUser = async (req, res, next) => {
         if (error && error.message) {
             next(createError('DATABASE_ERROR', errorDictionary.DATABASE_ERROR, new Error(error.message)));
         } else {
-            // Si no tiene 'message', enviar un mensaje genérico
             next(createError('DATABASE_ERROR', errorDictionary.DATABASE_ERROR, new Error('Hubo un problema en la base de datos.')));
         }
 
@@ -147,13 +146,11 @@ const addProductToCart = async (req, res, next) => {
 
         let cart = await cartModel.findById(user.cart);
         if (!cart) {
-            // Crear el carrito vacío con la referencia al usuario
             cart = await cartModel.create({
                 products: [],
-                user: userId // Asignar el usuario al carrito
+                user: userId 
             });
 
-            // Asocia el carrito al usuario
             user.cart = cart._id;
             await user.save();
         }
@@ -250,6 +247,54 @@ const uploadDocuments = async (req, res, next) => {
     }
 }
 
+const getCartByUserIdAndCartId = async (req, res, next) => {
+    try {
+
+        const { uid, cartId } = req.params;
+        if (!uid || !cartId) {
+            throw new Error('Faltan los parámetros del usuario o el carrito');
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(uid) || !mongoose.Types.ObjectId.isValid(cartId)) {
+            return res.status(400).json({ error: 'Uno de los IDs no es válido' });
+        }
+
+        const user = await usersService.getUserById(uid);
+        if (!user) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        const cart = await cartModel.findById(cartId);
+        if (!cart) {
+            throw new Error('No se encontró el carrito');
+        }
+        const cartItems = await Promise.all(
+            cart.products.map(async (item, index) => {
+                console.log(`Buscando producto con ID: ${item.product} en índice ${index}`);
+                const product = await productService.getBy(item.product);
+                if (!product) {
+                    console.error(`Producto con ID ${item.product} no encontrado en la BD.`);
+                    return null; // Devolvemos null en caso de que el producto no exista
+                }
+                console.log(`Producto encontrado:`, product);
+                return {
+                    product: product,
+                    quantity: item.quantity,
+                    name: product.name,
+                    price: product.price,
+                }
+            })
+        )
+
+        const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        return res.status(200).json({ cartItems, totalPrice });
+    } catch (error) {
+        console.error("Error al obtener el carrito:", error);
+        return res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
 export default {
     deleteUser,
     getAllUsers,
@@ -258,5 +303,6 @@ export default {
     createUser,
     addProductToCart,
     deleteProductFromCart,
+    getCartByUserIdAndCartId,
     uploadDocuments
 }

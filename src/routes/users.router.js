@@ -13,6 +13,7 @@ router.delete('/:uid', usersController.deleteUser);
 
 router.post('/:uid/cart/:pid', authenticateJWT, usersController.addProductToCart);
 router.delete('/:uid/cart/:pid', authenticateJWT, usersController.deleteProductFromCart);
+router.get('/:uid/cart/:cartId', authenticateJWT, usersController.getCartByUserIdAndCartId)
 
 router.post('/:uid/documents', uploader, usersController.uploadDocuments)
 

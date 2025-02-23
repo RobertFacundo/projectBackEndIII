@@ -2,7 +2,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 
-export const getDestination = (file) => {
+export const getDestination = (file, userId) => {
     if (file.mimetype.startsWith('image')) {
         return 'products';
     } else {
@@ -10,11 +10,11 @@ export const getDestination = (file) => {
     }
 };
 
-// Configuración de Multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
+        const userId = req.params.uid;
         const folder = getDestination(file);
-        const uploadPath = path.resolve('src', 'public', folder);
+        const uploadPath = path.resolve('src', 'public', userId, folder);
 
         if (!fs.existsSync(uploadPath)) {
             fs.mkdirSync(uploadPath, { recursive: true })

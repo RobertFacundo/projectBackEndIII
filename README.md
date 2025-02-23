@@ -76,7 +76,7 @@ POST http://localhost:8080/api/users/:uid/cart/:pid
 DELETE http://localhost:8080/api/users/:uid/cart/:pid
 
 ### Carga de documentos
-Se implementa POST /:uid/documents permite a los usuarios cargar documentos y imágenes. Los archivos se procesan con multer, se guardan en las carpetas products o documents dependiendo del tipo de archivo, y se asocian con el usuario correspondiente. En caso de éxito, se devuelven los documentos cargados, o un mensaje de error si no se subieron archivos o si ocurrió un problema con la base de datos.
+Se implementa POST /:uid/documents permite a los usuarios cargar documentos y imágenes. Los archivos se procesan con multer, se guardan en las carpetas products o documents dependiendo del tipo de archivo, y se asocian con el usuario correspondiente dentro de una subcarpeta con el userId. En caso de éxito, se devuelven los documentos cargados, o un mensaje de error si no se subieron archivos o si ocurrió un problema con la base de datos.
 
 ### Tests y Documentacion
 Bajo los siguientes scripts estan testeadas todas las funcionalidades y routes de products, sessions y users: 
@@ -98,7 +98,9 @@ Se puede verificar la url de la documentacion swagger en => http://localhost:808
   "password": "123"
 }
 
-//  terminar handlebars
+### Handlebars
+
+Para mejorar la presentacion se agregó un renderizado con handlebars en donde un usuario puede registrarse, hacer login, ver un home con su carro y los productos de la base de datos; en dicho home el usuario puede agregar productos a su carro y visualizarlos.
 
 
 **Creado por:**  

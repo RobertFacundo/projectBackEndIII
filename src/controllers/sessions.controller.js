@@ -47,7 +47,7 @@ const login = async (req, res, next) => {
 
     passport.authenticate('local', async (err, user, info) => {
         if (err) {
-            return next(err); 
+            return next(err);
         }
 
         if (!user) {
@@ -60,6 +60,8 @@ const login = async (req, res, next) => {
                     console.error('Error al iniciar sesión:', err);
                     return next(err);
                 }
+
+                req.session.user = user
 
                 user.last_connection = new Date();
                 await user.save();
@@ -82,24 +84,25 @@ const login = async (req, res, next) => {
                             name: `${user.first_name} ${user.last_name}`,
                             role: user.role,
                             id: user._id,
+                            cart: user.cart,
+                            documents: user.documents
                         },
                         token,
                     });
                 } else {
-                    return res.redirect('/home');  
+                    return res.redirect('/home');
                 }
             });
         } catch (error) {
             return res.status(500).send({ status: 'error', error: 'Error generando el token JWT' });
         }
-    })(req, res, next);  // Invocar Passport con el req, res y next
+    })(req, res, next); 
 };
 
 const current = async (req, res) => {
     const cookie = req.cookies['coderCookie'];
 
     try {
-        // Usa la misma clave secreta en ambos lugares
         const user = jwt.verify(cookie, process.env.JWT_SECRET);
         if (user) {
             return res.send({ status: "success", payload: user });
@@ -126,15 +129,15 @@ const unprotectedLogin = async (req, res) => {
             name: `${user.first_name} ${user.last_name}`,
             age: user.age,
         }, process.env.JWT_SECRET, { expiresIn: "1h" });
-        
+
         res.cookie('unprotectedCookie', token, { maxAge: 3600000, httpOnly: true }).send({ status: "success", message: "Unprotected Logged in" })
     } catch (error) {
         res.status(500).send({ status: "error", error: "Internal server error" });
     }
 }
 const unprotectedCurrent = async (req, res) => {
-    const token = req.cookies['coderCookie']; 
-    const guestToken = req.cookies['unprotectedCookie']; 
+    const token = req.cookies['coderCookie'];
+    const guestToken = req.cookies['unprotectedCookie'];
 
     if (token) {
         try {

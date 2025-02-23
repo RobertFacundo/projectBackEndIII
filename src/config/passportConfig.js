@@ -3,7 +3,6 @@ import pkg from 'passport-local';
 const LocalStrategy = pkg.Strategy;
 import { usersService } from '../services/index.js';
 import { createHash, passwordValidation } from '../utils/index.js'
-// Configuración de la estrategia local
 
 passport.use(
     new LocalStrategy(
@@ -15,7 +14,6 @@ passport.use(
                     return done(null, false, { message: 'User not found' });
                 }
 
-                // Validar la contraseña
                 if (!passwordValidation(password, user.password)) {
                     return done(null, false, { message: 'Incorrect password' });
                 }

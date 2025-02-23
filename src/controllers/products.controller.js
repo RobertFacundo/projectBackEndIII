@@ -6,7 +6,17 @@ import errorDictionary from "../utils/errorDictionary.js";
 const getAllProducts = async (req, res, next) => {
     try {
         const products = await productService.getAll();
-        res.send({ status: 'success', payload: products });
+        const user = req.session.user;
+
+        if(req.accepts('application/json')){
+            return res.send({ status: 'success', payload: products });
+        }else{
+           return res.render("home", {
+                title: "Página de Inicio",
+                user,  
+                products 
+            });
+        }
     } catch (error) {
         next(createError('DATABASE_ERROR', errorDictionary.DATABASE_ERROR, error))
     }
