@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { expect } from "chai";
 import supertest from "supertest";
-import app from "../src/app.js";  // Suponiendo que tu app está en este archivo
-import { cartService } from "../src/services/index.js";  // Si tienes un servicio para crear el carrito
+import app from "../src/app.js";  
+import { cartService } from "../src/services/index.js";  
 
 let mongoServer;
 let cartId;
@@ -26,7 +26,7 @@ beforeEach(async function () {
     const cartDoc = {
         user: new mongoose.Types.ObjectId(),
         products: [{
-            product: new mongoose.Types.ObjectId(),  // Suponiendo que tienes productos en tu base de datos
+            product: new mongoose.Types.ObjectId(), 
             quantity: 2
         }]
     };

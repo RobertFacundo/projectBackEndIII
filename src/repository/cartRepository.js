@@ -13,7 +13,6 @@ export default class CartRepository extends GenericRepository {
     };
 
     create = (doc) => {
-        // Usa `create` en lugar de `save`
         return this.dao.create(doc); 
     };
 

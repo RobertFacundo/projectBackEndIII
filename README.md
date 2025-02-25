@@ -105,6 +105,40 @@ Y para realizar un login =>
 ### Handlebars
 Para mejorar la presentacion se agregó un renderizado con handlebars en donde un usuario puede registrarse, hacer login, ver un home con su carro y los productos de la base de datos; en dicho home el usuario puede agregar productos a su carro y visualizarlos.
 
+## Imagen de Docker
+
+La imagen de Docker para este proyecto se encuentra disponible en Docker Hub:
+
+[Docker Hub - robertfacundo/ecommerce-app](https://hub.docker.com/repository/docker/robertfacundo/ecommerce-app/general)
+
+Para ejecutar la imagen =>
+
+docker pull robertfacundo/ecommerce-app
+docker run -p 8080:8080 robertfacundo/ecommerce-app
+
+-------------------------------------------------
+
+### Agradecimientos 
+
+Quiero expresar mi agradecimiento a mis tutores y profesores del curso.
+
+Este proyecto es el resultado del aprendizaje adquirido durante el curso y representa mi compromiso por seguir creciendo en este maravilloso mundo del desarrollo web.
+
+Actualmente estoy en la búsqueda activa de mi primer empleo como desarrollador web, una oportunidad que no solo marcaría mi inicio en el mundo IT, sino que representaría un significativo cambio en mi vida.
+
+A mis tutores y profesores => dado que ustedes ya forman parte del sector IT, tal vez estén al tanto de alguna vacante o conozcan personas en busca de talento emergente. Cualquier recomendación o consejo sería invaluable para mí, y estaré profundamente agradecido por su apoyo en esta etapa inicial de mi carrera.
+
+Si desean conocer más sobre mi trabajo, les invito a visitar mi portfolio personal, donde encontrarán otros proyectos en los que he trabajado, mis habilidades técnicas, y más información sobre mí como profesional en desarrollo.
+
+Portfolio: https://robertfacundo.netlify.app/
+
+¡No duden en contactarme si tienen alguna oportunidad o recomendación!
+
+Gracias por tomarte el tiempo de llegar hasta acá.
+
+Atentamente,
+
+Facundo Robert
 
 **Creado por:**  
 Facundo Robert

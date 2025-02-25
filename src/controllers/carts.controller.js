@@ -34,21 +34,17 @@ const createCart = async (req, res, next) => {
         console.log(req.body);
         const { user } = req.body;
 
-        // Verificar si el usuario está presente
         if (!user) {
             return next(createError("INVALID_PARAM", errorDictionary.INVALID_PARAM));
         }
 
-        // Verificar si el usuario ya tiene un carrito asociado
         const existingCart = await cartService.getBy({ user });
 
         if (existingCart) {
-            // Si ya existe un carrito para el usuario, retornar un mensaje de error
             return next(createError("CART_ALREADY_EXISTS", errorDictionary.CART_ALREADY_EXISTS));
         }
 
-        // Crear un carrito vacío solo con el usuario
-        const newCart = await cartService.create({ user, products: [] }); // Sin productos por ahora
+        const newCart = await cartService.create({ user, products: [] }); 
         console.log("Nuevo carrito creado:", newCart);
         res.status(201).send({ status: 'success', payload: newCart });
 
