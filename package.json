@@ -9,7 +9,8 @@
     "dev": "nodemon src/app.js",
     "userTest": "mocha tests/Users.test.js",
     "testProduct": "mocha tests/productsTest.test.js",
-    "sessionstest": "mocha tests/sessionsTest.test.js"
+    "sessionstest": "mocha tests/sessionsTest.test.js",
+    "cartsTest": "mocha tests/Carts.test.js"
   },
   "keywords": [],
   "author": "",

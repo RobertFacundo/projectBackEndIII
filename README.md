@@ -83,11 +83,13 @@ Bajo los siguientes scripts estan testeadas todas las funcionalidades y routes d
 
     "userTest": "mocha tests/Users.test.js",
     "testProduct":"mocha tests/productsTest.test.js",
-    "sessionstest": "mocha tests/sessionsTest.test.js"
+    "sessionstest": "mocha tests/sessionsTest.test.js",
+    "cartsTest": "mocha tests/Carts.test.js"
 
-Las documentaciones pertinentes a products y users se encuentran en los archivos 
+Las documentaciones pertinentes a products, users y carts se encuentran en los archivos 
 `products.yaml`
 `users.yaml`
+`carts.yaml`
 
 Se puede verificar la url de la documentacion swagger en => http://localhost:8080/docs/ 
  Y para facilitar la verificación de los endpoints proporciono valores de ejemplos de la base de datos => 

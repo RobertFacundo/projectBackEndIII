@@ -1,0 +1,222 @@
+openapi: 3.0.0
+info:
+  title: API de Carritos de Compra
+  version: 1.0.0
+  description: API para gestionar carritos de compras
+paths:
+  /carts:
+    get:
+      summary: Obtener todos los carritos
+      responses:
+        "200":
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: éxito
+                  payload:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          example: "60d5b2c4f9e6c700171ce7d3"
+                        user:
+                          type: string
+                          example: "60d5b2c4f9e6c700171ce7d3"
+                        products:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              product:
+                                type: string
+                                example: "60d5b2c4f9e6c700171ce7d2"
+                              quantity:
+                                type: integer
+                                example: 2
+    post:
+      summary: Crear un nuevo carrito
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  example: "60d5b2c4f9e6c700171ce7d3"
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      product:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d2"
+                      quantity:
+                        type: integer
+                        example: 2
+      responses:
+        "201":
+          description: Carrito creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: éxito
+                  payload:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d3"
+                      user:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d3"
+                      products:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            product:
+                              type: string
+                              example: "60d5b2c4f9e6c700171ce7d2"
+                            quantity:
+                              type: integer
+                              example: 2
+
+  /carts/{cid}:
+    get:
+      summary: Obtener un carrito específico por ID
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: El ID del carrito a obtener
+      responses:
+        "200":
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: éxito
+                  payload:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d3"
+                      user:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d3"
+                      products:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            product:
+                              type: string
+                              example: "60d5b2c4f9e6c700171ce7d2"
+                            quantity:
+                              type: integer
+                              example: 2
+    put:
+      summary: Actualizar un carrito
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: El ID del carrito a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  example: "60d5b2c4f9e6c700171ce7d3"
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      product:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d2"
+                      quantity:
+                        type: integer
+                        example: 2
+      responses:
+        "200":
+          description: Carrito actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: éxito
+                  payload:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d3"
+                      user:
+                        type: string
+                        example: "60d5b2c4f9e6c700171ce7d3"
+                      products:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            product:
+                              type: string
+                              example: "60d5b2c4f9e6c700171ce7d2"
+                            quantity:
+                              type: integer
+                              example: 2
+    delete:
+      summary: Eliminar un carrito
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: El ID del carrito a eliminar
+      responses:
+        "200":
+          description: Carrito eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: éxito
+                  message:
+                    type: string
+                    example: "Carrito eliminado exitosamente"

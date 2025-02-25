@@ -22,6 +22,7 @@ import usersController from './controllers/users.controller.js';
 
 import homeRouter from './routes/home.router.js';
 import usersRouter from './routes/users.router.js';
+import cartsRouter from './routes/carts.router.js'
 import productsRouter from './routes/products.router.js'
 import sessionsRouter from './routes/sessions.router.js';
 import mockingRouter from './routes/mocks.router.js';
@@ -91,6 +92,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/loggerTest', loggerTestRouter);
+app.use('/api/carts', cartsRouter)
 app.use('/api/users', usersRouter);
 app.use('/api/products', productsRouter)
 app.use('/api/sessions', sessionsRouter);

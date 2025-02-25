@@ -32,7 +32,17 @@ const errorDictionary = {
     NOT_FILES_UPLOADED:{
         message: 'No se han subido los archivos',
         code: 400,
-        suggestion:'intenta subir imagenes o documentos'
+        suggestion:'Intenta subir imagenes o documentos'
+    },
+    CART_NOT_FOUND:{
+        message: 'No se ha encontrado el carro',
+        code: 404,
+        suggestion: 'Intenta con un CID valido'
+    },
+    CART_ALREADY_EXISTS:{
+        message: 'El usuario ya tiene un carro asociado a su id',
+        code:500,
+        suggestion: 'Intenta otro user id o prueba en pos1tman un nuevo objectID de mongoose'
     }
 
 }
